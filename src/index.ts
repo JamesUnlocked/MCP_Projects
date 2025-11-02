@@ -79,9 +79,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
   try {
     switch (name) {
       case "echo": {
-        const message = args?.message as string;
-        if (!message) {
-          throw new Error("Message is required");
+        const message = args?.message;
+        if (typeof message !== "string") {
+          throw new Error("Message is required and must be a string");
         }
         return {
           content: [
@@ -94,11 +94,11 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       }
 
       case "add": {
-        const a = args?.a as number;
-        const b = args?.b as number;
-        if (typeof a !== "number" || typeof b !== "number") {
+        if (typeof args?.a !== "number" || typeof args?.b !== "number") {
           throw new Error("Both a and b must be numbers");
         }
+        const a = args.a;
+        const b = args.b;
         const result = a + b;
         return {
           content: [
